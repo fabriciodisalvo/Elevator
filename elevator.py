@@ -12,13 +12,17 @@ class Building:
 
     def print_waiting_list(self):
         print("Building %s. %i floors." % (self.name, self.number_of_floors))
-        print("Waiting Cue:")
+        first_passenger = False
         for i in self.waiting_dict.keys():
-            if len(self.waiting_dict[i]) == 1:
-                print("At floor %s, there is %s person waiting.\n" % (str(i), len(self.waiting_dict[i])))
-            elif len(self.waiting_dict[i]) > 1:
-                print("At floor %s, there are %s people waiting.\n" % (str(i), len(self.waiting_dict[i])))
-
+            waiting_cue = len(self.waiting_dict[i])
+            if not first_passenger and waiting_cue > 0:
+                first_passenger = True
+                print("Waiting Cue:")
+            if waiting_cue == 1:
+                print("At floor %s, there is %s person waiting." % (str(i), waiting_cue))
+            elif waiting_cue > 1:
+                print("At floor %s, there are %s people waiting." % (str(i), waiting_cue))
+        print()
 
 class Elevator:
     def __init__(self, elevator_id, building, capacity=20):
