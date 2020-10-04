@@ -12,7 +12,7 @@ class Building:
 
     def print_waiting_list(self):
         print("Building %s. %i floors." % (self.name, self.number_of_floors))
-            print("Waiting Cue:")
+        print("Waiting Cue:")
         for i in self.waiting_dict.keys():
             if len(self.waiting_dict[i]) == 1:
                 print("At floor %s, there is %s person waiting.\n" % (str(i), len(self.waiting_dict[i])))
