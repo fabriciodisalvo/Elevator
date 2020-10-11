@@ -7,8 +7,10 @@ class Building:
         for i in range(int(number_of_floors) + 1):
             self.waiting_dict[i] = []
 
-    def add_person(self, floor, person_waiting_name, person_target_floor):
-        self.waiting_dict[floor].append((person_waiting_name, person_target_floor))
+    def add_passengers(self, passenger_list):
+        for next_passenger in passenger_list:
+            floor, person_waiting_name, person_target_floor = next_passenger
+            self.waiting_dict[floor].append((person_waiting_name, person_target_floor))
         self.activate_switchboard(floor)
 
     def activate_switchboard(self, floor):
