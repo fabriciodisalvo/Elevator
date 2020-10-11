@@ -16,7 +16,7 @@ class Building:
             if elevator.current_floor < floor:
                 elevator.cue.append(floor)
                 elevator.run_elevator()
-                break
+                return
         self.elevators[0].cue.append(floor)
         self.elevators[0].run_elevator()
 
@@ -102,5 +102,5 @@ class Elevator:
                 for _ in range(self.current_floor - next_target_floor):
                     self.go_down()
             self.cue.remove(next_target_floor)
-            print(self.cue, ' faltan, asi que running again...')
+            print('Cue (floors) :  ', self.cue)
             self.run_elevator()
