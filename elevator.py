@@ -8,18 +8,22 @@ class Building:
             self.waiting_dict[i] = []
 
     def add_passengers(self, passenger_list):
+        destinations = []
         for next_passenger in passenger_list:
             floor, person_waiting_name, person_target_floor = next_passenger
+            destinations.append(floor)
             self.waiting_dict[floor].append((person_waiting_name, person_target_floor))
-        self.activate_switchboard(floor)
+        self.activate_switchboard(destinations)
 
-    def activate_switchboard(self, floor):
+    def activate_switchboard(self, destinations):
         for elevator in self.elevators:
-            if elevator.current_floor < floor:
-                elevator.cue.append(floor)
+            if elevator.current_floor < min(destinations):
+                for floor in destinations:
+                    elevator.cue.append(floor)
                 elevator.run_elevator()
                 return
-        self.elevators[0].cue.append(floor)
+        for floor in destinations:
+            self.elevators[0].cue.append(floor)
         self.elevators[0].run_elevator()
 
     def print_waiting_list(self):
@@ -104,5 +108,4 @@ class Elevator:
                 for _ in range(self.current_floor - next_target_floor):
                     self.go_down()
             self.cue.remove(next_target_floor)
-            print('Cue (floors) :  ', self.cue)
             self.run_elevator()
