@@ -96,7 +96,8 @@ class Elevator:
         if len(self.cue) == 0:
             return
         else:
-            next_target_floor = min(self.cue)
+            self.cue = self.sort_cue(self.current_floor, list(set(self.cue)))
+            next_target_floor = self.cue[0]
             if next_target_floor == self.current_floor:
                 print("The Elevator %s is on floor %s." % (self.elevator_id, str(self.current_floor)))
                 print("   Opening door...")
@@ -109,3 +110,14 @@ class Elevator:
                     self.go_down()
             self.cue.remove(next_target_floor)
             self.run_elevator()
+
+    def sort_cue(self, current_floor, cue):
+        cue_up = []
+        cue_down = []
+        for i in cue:
+            if i >= current_floor:
+                cue_up.append(i)
+            else:
+                cue_down.append(i)
+        sorted_cue = sorted(cue_up) + sorted(cue_down, reverse=True)
+        return sorted_cue
