@@ -66,31 +66,32 @@ class Elevator:
             return 1
 
     def open_door(self):
-        passengers_to_unboard = [x for x in self.passenger_dict[self.current_floor]]
-        for i in passengers_to_unboard:
-            self.occupancy = self.occupancy - 1
-            self.passenger_dict[self.current_floor].remove(i)
-            print("   %s has unboarded the elevator %s, which has now %s people aboard." % (i, self.elevator_id, self.occupancy))
-        passengers_to_board = [x for x in self.building.waiting_dict[self.current_floor]]
-        for i in passengers_to_board:
-            if self.load_passenger(i[0], i[1]):
-                self.cue.append(i[1])
-                self.building.waiting_dict[self.current_floor].remove(i)
-        print()
+        if len(self.building.waiting_dict[self.current_floor]) > 0 or len(self.passenger_dict[self.current_floor]) > 0:
+            print("   Opening door...")
+            passengers_to_unboard = [x for x in self.passenger_dict[self.current_floor]]
+            for i in passengers_to_unboard:
+                self.occupancy = self.occupancy - 1
+                self.passenger_dict[self.current_floor].remove(i)
+                print("   %s has unboarded the elevator %s, which has now %s people aboard." % (i, self.elevator_id, self.occupancy))
+            passengers_to_board = [x for x in self.building.waiting_dict[self.current_floor]]
+            for i in passengers_to_board:
+                if self.load_passenger(i[0], i[1]):
+                    self.cue.append(i[1])
+                    self.building.waiting_dict[self.current_floor].remove(i)
+                else:
+                    break
+            print()
+            return
 
     def go_up(self):
         self.current_floor = self.current_floor + 1
         print("The Elevator %s is going up, now in floor %s." % (self.elevator_id, str(self.current_floor)))
-        if len(self.building.waiting_dict[self.current_floor]) > 0 or len(self.passenger_dict[self.current_floor]) > 0:
-            print("   Opening door...")
-            self.open_door()
+        self.open_door()
 
     def go_down(self):
         self.current_floor = self.current_floor - 1
         print("The Elevator %s is going down, now in floor %s." % (self.elevator_id, str(self.current_floor)))
-        if len(self.building.waiting_dict[self.current_floor]) > 0 or len(self.passenger_dict[self.current_floor]) > 0:
-            print("   Opening door...")
-            self.open_door()
+        self.open_door()
 
     def run_elevator(self):
         if len(self.cue) == 0:
